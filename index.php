@@ -13,7 +13,7 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
 }
 ?>
     <script type="text/javascript" src="https://test.adyen.com/hpp/cse/js/8214942187553853.shtml"></script>
-    <form method="POST" action="index.php" id="adyen-encrypted-form">
+    <form method="POST" action="" id="adyen-encrypted-form">
         <input type="text" size="20" data-encrypted-name="number" value="5103 2219 1119 9245"/>
         <input type="text" size="20" data-encrypted-name="holderName" value="Anh"/>
         <input type="text" size="2" data-encrypted-name="expiryMonth" value="08"/>
@@ -22,8 +22,12 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
         <input type="hidden" value="2017-05-08T10:15:00.428+07:00" data-encrypted-name="generationtime"/>
         <input type="submit" value="Pay"/>
     </form>
-    <button><a href="capture.php">Capture payment</a></button>
-    <button><a href="recurring.php">Recurring payment</a></button>
+    <div>
+        <button><a href="capture.php">Capture payment</a></button>
+    </div>
+    <div>
+        <button><a href="recurring.php">Recurring payment</a></button>
+    </div>
     <script>
         // The form element to encrypt.
         var form = document.getElementById('adyen-encrypted-form');
@@ -48,7 +52,7 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
             'currency' => 'USD'
         ],
 
-        'reference' => 'hoiposayden',
+        'reference' => 'hoiposadyen',
         'merchantAccount' => 'TheBeerFactoryXpress'
     ];
 
