@@ -12,11 +12,11 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
 
 <script type="text/javascript" src="https://test.adyen.com/hpp/cse/js/8214942187553853.shtml"></script>
 <form method="POST" action="index.php" id="adyen-encrypted-form">
-    <input type="text" size="20" data-encrypted-name="number"/>
-    <input type="text" size="20" data-encrypted-name="holderName"/>
-    <input type="text" size="2" data-encrypted-name="expiryMonth"/>
-    <input type="text" size="4" data-encrypted-name="expiryYear"/>
-    <input type="text" size="4" data-encrypted-name="cvc"/>
+    <input type="text" size="20" data-encrypted-name="number" value="5103 2219 1119 9245"/>
+    <input type="text" size="20" data-encrypted-name="holderName" value="Anh"/>
+    <input type="text" size="2" data-encrypted-name="expiryMonth" value="08"/>
+    <input type="text" size="4" data-encrypted-name="expiryYear" value="2018"/>
+    <input type="text" size="4" data-encrypted-name="cvc" value="737"/>
     <input type="hidden" value="2017-08-05T11:53:00.428+07:00" data-encrypted-name="generationtime"/>
     <input type="submit" value="Pay"/>
 </form>
