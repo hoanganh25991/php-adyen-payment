@@ -17,7 +17,7 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
     <input type="text" size="2" data-encrypted-name="expiryMonth" value="08"/>
     <input type="text" size="4" data-encrypted-name="expiryYear" value="2018"/>
     <input type="text" size="4" data-encrypted-name="cvc" value="737"/>
-    <input type="hidden" value="2017-08-05T11:53:00.428+07:00" data-encrypted-name="generationtime"/>
+    <input type="hidden" value="2017-05-08T10:15:00.428+07:00" data-encrypted-name="generationtime"/>
     <input type="submit" value="Pay"/>
 </form>
 <script>

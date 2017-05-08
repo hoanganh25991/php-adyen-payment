@@ -2,16 +2,16 @@
 require_once("vendor/autoload.php");
 
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
-if (!isset($_SERVER['PHP_AUTH_USER'])) {
-    header('WWW-Authenticate: Basic realm="My Realm"');
-    header('HTTP/1.0 401 Unauthorized');
-    echo 'Text to send if user hits Cancel button';
-    exit;
-} else {
-    echo "<p>Hello {$_SERVER['PHP_AUTH_USER']}.</p>";
-    echo "<p>You entered {$_SERVER['PHP_AUTH_PW']} as your password.</p>";
-}
-?>
+    if (!isset($_SERVER['PHP_AUTH_USER'])) {
+        header('WWW-Authenticate: Basic realm="My Realm"');
+        header('HTTP/1.0 401 Unauthorized');
+        echo 'Text to send if user hits Cancel button';
+        exit;
+    } else {
+        echo "<p>Hello {$_SERVER['PHP_AUTH_USER']}.</p>";
+        echo "<p>You entered {$_SERVER['PHP_AUTH_PW']} as your password.</p>";
+    }
+    ?>
     <script type="text/javascript" src="https://test.adyen.com/hpp/cse/js/8214942187553853.shtml"></script>
     <form method="POST" action="index.php" id="adyen-encrypted-form">
         <input type="text" size="20" data-encrypted-name="number" value="5103 2219 1119 9245"/>
@@ -22,8 +22,7 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
         <input type="hidden" value="2017-05-08T10:15:00.428+07:00" data-encrypted-name="generationtime"/>
         <input type="submit" value="Pay"/>
     </form>
-    <button><a href="capture.php">Capture payment</a></button>
-    <button><a href="recurring.php">Recurring payment</a></button>
+    <button><a href="capture.php">Capture the payment</a></button>
     <script>
         // The form element to encrypt.
         var form = document.getElementById('adyen-encrypted-form');
@@ -49,7 +48,10 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
         ],
 
         'reference' => 'hoiposayden',
-        'merchantAccount' => 'TheBeerFactoryXpress'
+        'merchantAccount' => 'TheBeerFactoryXpress',
+        'recurring' => [
+            'contract' => \Adyen\Contract::ONECLICK_RECURRING
+        ],
     ];
 
     $client = new \Adyen\Client();
@@ -58,8 +60,8 @@ if (!isset($_SERVER['PHP_AUTH_USER'])) {
     $client->setPassword("jcfqgp2pkhba");
     $client->setEnvironment(\Adyen\Environment::TEST);
 
-    $service = new \Adyen\Service\Payment($client);
-    
+    $service = new \Adyen\Service\Recurring($client);
+
     $params  = $post_fields;
 
     try{
