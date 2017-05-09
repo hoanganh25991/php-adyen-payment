@@ -99,3 +99,14 @@ function isGet(){
 function isPost(){
     return $_SERVER['REQUEST_METHOD'] === 'POST';
 }
+
+/**
+ * Support var_dump easy view
+ * @param $title
+ * @param $content
+ */
+function hoiVarDump($title, $content){
+    echo "<h4>$title</h4>";
+    
+    var_dump($content);
+}

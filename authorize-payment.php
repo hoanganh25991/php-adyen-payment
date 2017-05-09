@@ -14,7 +14,6 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         exit;
         
     } else {
-        
         echo "<p>Hello {$_SERVER['PHP_AUTH_USER']}.</p>";
         echo "<p>You entered {$_SERVER['PHP_AUTH_PW']} as your password.</p>";
         
@@ -22,12 +21,12 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
     // Reuse form to ask customer input
     // credit card info
-    include_once('form.php');
+    include_once('authorize-payment-form.php');
 }
 
 
-if($_SERVER['REQUEST_METHOD'] == 'POST') {
-    var_dump($_POST);
+if(isPost()) {
+    //var_dump($_POST);
 
     $client_payload = $_POST['adyen-encrypted-data'];
 
@@ -48,7 +47,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         'merchantAccount' => 'TheBeerFactoryXpress',
     ];
 
-    var_dump($params);
+    hoiVarDump("Authorize Payment Params", $params);
 
     $service = new \Adyen\Service\Payment(getClient());
 
@@ -56,10 +55,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     try{
         
         $result = $service->authorise($params);
-        var_dump($result);
+        hoiVarDump('Create Payment Result', $result);
 
         // Write log
         storePayment(compact('params', 'result'));
+
         hoiLog($result);
 
     }catch(\Exception $e){

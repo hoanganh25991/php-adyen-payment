@@ -7,7 +7,7 @@
 // example: 2017-05-09T19:53:39+07:00
 $generationtime = date(DATE_W3C, mktime(date("H"), date("i"), date("s"), date("m"), date("j"), date("Y")));
 ?>
-
+<h3>Authorize Payment Form</h3>
 <script type="text/javascript" src="https://test.adyen.com/hpp/cse/js/8214942187553853.shtml"></script>
 <form method="POST" action="" id="adyen-encrypted-form">
     <input type="text" size="20" data-encrypted-name="number" value="5555 4444 3333 1111"/>
