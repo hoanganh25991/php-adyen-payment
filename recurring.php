@@ -39,55 +39,39 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         ],
 
-        'card' => [
-            'number'      => '5555 4444 3333 1111',
-            'expiryMonth' => '8',
-            'expiryYear'  => '2018',
-            'cvc'         => '737',
-            'holderName'  => 'Anh',
-        ],  
-
         'amount' => [
-            
             'value' => 20000,
-            'currency' => 'EUR',
-            
+            'currency' => 'EUR'
         ],
 
         'reference' => 'recurring_payment',
 
         'merchantAccount' => 'TheBeerFactoryXpress',
 
-//        'shopperEmail' => 's.hopper@test.com',
+       // Required fields for ONECLICK
 
-//        'shopperIP' => '61.294.12.12',
-
-        'recurring' => [
-            
-            'contract' => \Adyen\Contract::RECURRING,
-
-            'recurringDetailName' => '1'
-//            'contract' => 'RECURRING,ONECLICK',
-
+        'card' => [
+            'cvc' => '737',
         ],
 
-        'shopperReference' => '1',
+        'recurring' => [
+            'contract' => 'ONECLICK',
+        ],
 
-        //        'shopperReference' => 'Simon Hopper',
-//
+        'shopperReference' => '34nrvn29',
+
         'shopperInteraction' => 'Ecommerce',
-//
-        'selectedRecurringDetailReference' => 'LATEST',
-//
-//        'selectedBrand' => '',
 
+        'selectedRecurringDetailReference' => 'LATEST',
     ];
 
     var_dump($params);
 
+//    $service = new \Adyen\Service\Payment(getClient());
     $service = new \Adyen\Service\Recurring(getClient());
 
     try{
+//        $result = $service->authorise($params);
         $result = $service->listRecurringDetails($params);
         var_dump($result);
 
