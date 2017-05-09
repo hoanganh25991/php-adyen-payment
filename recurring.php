@@ -60,6 +60,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     ];
 
+    var_dump($params);
+
     $service = new \Adyen\Service\Recurring(getClient());
 
     try{

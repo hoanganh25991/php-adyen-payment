@@ -50,6 +50,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         'shopperReference' => '21321346546',
     ];
 
+    var_dump($params);
 
     $service = new \Adyen\Service\Payment(getClient());
 

@@ -33,6 +33,7 @@ if(isset( $_GET['psp_ref'] )){
         'reference' => 'hoiposayden',
     ];
     
+    var_dump($params);
 
     $service = new \Adyen\Service\Modification(getClient());
 

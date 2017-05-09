@@ -13,23 +13,25 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
     $params = [
         // Important info
-        'paymentAmount'     => 20000,
-        'currencyCode'      => 'USD',
-        'skinCode'          => 'BXsl0kmS',
+        'countryCode'       => 'DE',
+        'currencyCode'      => 'EUR',
         'merchantAccount'   => 'TheBeerFactoryXpress',
-        'sessionValidity'   => "'.$sessionValidity.'",
+        'merchantReference' => 'get_payment_methods',
+        'paymentAmount'     => 20000,
+        'sessionValidity'   => $sessionValidity,
+        'skinCode'          => 'BXsl0kmS',
 
         // Optional
-        'merchantReference' => 'get_payment_methods',
         'countryCode'       => 'NL',
         'shopperLocale'     => 'n1_NL'
     ];
 
     // Self compute signature
     $merchantSig = \Adyen\Util\Util::calculateSha256Signature($hmacKey, $params);
-
     // Then reappend to params request
     $params["merchantSig"] = $merchantSig;
+    
+    var_dump($params);
 
     $service = new \Adyen\Service\DirectoryLookup(getClient());
 
