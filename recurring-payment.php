@@ -4,7 +4,9 @@ require_once('util.php');
 
 include_once('navigator.php');
 
-if($_SERVER['REQUEST_METHOD'] == 'GET'){
+session_start();
+
+if(isGet()){
     
     if (!isset($_SERVER['PHP_AUTH_USER'])) {
         
@@ -26,56 +28,67 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
 }
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    
-    var_dump($_POST);
 
-    $client_payload = $_POST['adyen-encrypted-data'];
+if(isPost()){
 
-    $params = [
-        'additionalData' => [
+    //var_dump($_POST);
+    $createRecurringPaymentFirsttime = isset($_POST['adyen-encrypted-data']);
 
-            'card.encrypted.json' => $client_payload
+    if($createRecurringPaymentFirsttime){
+        $client_payload = $_POST['adyen-encrypted-data'];
 
-        ],
+        $shopperReference = generateShopperReference();
 
-        'amount' => [
-            'value' => rand(100, 500) * 100,
-            'currency' => 'EUR'
-        ],
+        $_SESSION['lastShopperReference'] = $shopperReference;
 
-        'reference' => 'recurring_payment_firsttime',
+        $params = [
+            'additionalData' => [
 
-        'merchantAccount' => 'TheBeerFactoryXpress',
+                'card.encrypted.json' => $client_payload
 
-       // Required fields for RECURRING
+            ],
 
-        'recurring' => [
-            'contract' => \Adyen\Contract::RECURRING,
-        ],
+            'amount' => [
+                'value' => rand(100, 500) * 100,
+                'currency' => 'EUR'
+            ],
 
-        'shopperReference' => generateShopperReference(),
+            'reference' => 'recurring_payment_firsttime',
 
-        'shopperInteraction' => 'ContAuth',
-    ];
+            'merchantAccount' => 'TheBeerFactoryXpress',
 
-    var_dump($params);
+            // Required fields for RECURRING
+            'recurring' => [
+                'contract' => \Adyen\Contract::RECURRING,
+            ],
 
-    $service = new \Adyen\Service\Payment(getClient());
+            'shopperReference' => $shopperReference,
 
-    try{
-        $result = $service->authorise($params);
-        var_dump($result);
+            'shopperInteraction' => 'ContAuth',
+        ];
 
-        // Write log
-        storePayment($params);
-        hoiLog($result);
-       
-    }catch(\Exception $e){
-        
-        var_dump($e->getMessage());
-        
+        var_dump('Params for recurring payment', $params);
+        var_dump('Difference keys compare to normal authorzied payment', ['recurring', 'shopperReference', 'shopperInteraction']);
+        var_dump('This first time will create the shopperReference for recurring payment later use', ['shopperReference' => $shopperReference]);
+
+        $service = new \Adyen\Service\Payment(getClient());
+
+        try{
+            $result = $service->authorise($params);
+            var_dump($result);
+
+            // Write log
+            storePayment(compact('params', 'result'));
+            hoiLog($result);
+
+        }catch(\Exception $e){
+
+            var_dump($e->getMessage());
+
+        }
     }
+
+
 }
 
 
