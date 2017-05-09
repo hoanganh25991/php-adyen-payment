@@ -44,7 +44,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             'currency' => 'EUR'
         ],
 
-        'reference' => 'recurring_payment',
+        'reference' => 'recurring_payment_firsttime',
 
         'merchantAccount' => 'TheBeerFactoryXpress',
 

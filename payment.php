@@ -59,7 +59,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         var_dump($result);
 
         // Write log
-        storePayment($params);
+        storePayment(compact('params', 'result'));
         hoiLog($result);
 
     }catch(\Exception $e){

@@ -34,13 +34,13 @@ function readLog($filename = PSP_LOG_FILE){
     $data = [];
     while($line = fgets($log_file)){
         try{
-            $data[] = json_decode($line);
+            $data[] = json_decode($line, true);
         }catch(\Exception $e){
             errorLog($e->getMessage());
         }
     }
 
-    return $data;
+    return array_slice(array_reverse($data), 0, 4);
 }
 
 
@@ -87,4 +87,15 @@ function randomPassword() {
 
 function generateShopperReference(){
     return randomPassword();
+}
+
+/**
+ * Support check GET POST
+ */
+function isGet(){
+    return $_SERVER['REQUEST_METHOD'] === 'GET';
+}
+
+function isPost(){
+    return $_SERVER['REQUEST_METHOD'] === 'POST';
 }

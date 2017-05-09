@@ -4,51 +4,77 @@ require_once('util.php');
 
 include_once('navigator.php');
 
-if($_SERVER['REQUEST_METHOD'] == 'GET'){ ?>
-    
-    <h3>Submit the PSP reference to capture</h3>
-    <form method="GET" action="capture.php">
-        <input type="text" name="psp_ref" />
-        <button>Capture</button>
-    </form>
-    
-<?php }
+if(isGet()){
+    $recent_payments = fetchRecentPayment();
 
-if(isset( $_GET['psp_ref'] )){
-    
-    $psp_ref = $_GET['psp_ref'];
+    echo "<h1>List 5 recent payments:</h1>";
 
-    $params = [
-        'merchantAccount' => 'TheBeerFactoryXpress',
-        
-        'modificationAmount' => [
-            
-            'value' => 42800,
-            'currency' => 'EUR',
-            
-        ],
+    echo "<ul>";
 
-//        "card" => ["expiryMonth" => "8","expiryYear" => "2018","holderName" => "Anh","number" => "1111"],
+    foreach($recent_payments as $index => $payment){ ?>
+        <li>
+            <div>
+                <?php var_dump('Payment PSP Reference', $payment['result']['pspReference'], $payment); ?>
+                <form method="POST">
+                    <input type="hidden" name="payment_index" value="<?php echo $index; ?>"/>
+                    <input type="hidden" name="action" value="capture" />
+                    <button>Capture</button>
+                </form>
+                <hr/>
+            </div>
+        </li>
+    <?php }
 
-        'originalReference' => '8814943056556534',
-        
-        'reference' => 'asdfasdf',
-    ];
-    
-    var_dump($params);
+    echo "</ul>";
+}
 
-    $service = new \Adyen\Service\Modification(getClient());
+if(isPost()){
+    $wantCapture = isset($_POST['action'])
+                   && $_POST['action'] == 'capture'
+                   && isset($_POST['payment_index']);
 
-    try{
-        $result = $service->capture($params);
-        var_dump($result);
-        
-        // Write log
-        hoiLog($result);
-        
-    }catch(\Exception $e){
-        
-        var_dump($e->getMessage());
+    if($wantCapture){
+        // Which payment want to capture
+        $data          = fetchRecentPayment();
+        // Simple load by index
+        // When new payment created while recapture code
+        // >>> index wrong
+        $payment_index = $_POST['payment_index'];
+        $payment       = $data[$payment_index];
+        // Get info from that payment to capture
+        $psp_ref  = $payment['result']['pspReference'];
+        $value    = $payment['params']['amount']['value'];
+        $currency = $payment['params']['amount']['currency'];
+
+        $params = [
+            'merchantAccount' => 'TheBeerFactoryXpress',
+
+            'modificationAmount' => [
+
+                'value' => $value,
+                'currency' => $currency,
+
+            ],
+
+            'originalReference' => $psp_ref,
+
+            'reference' => 'capture_payment',
+        ];
+
+
+        $service = new \Adyen\Service\Modification(getClient());
+
+        try{
+            $result = $service->capture($params);
+            var_dump($result);
+
+            // Write log
+            hoiLog($result);
+
+        }catch(\Exception $e){
+
+            var_dump($e->getMessage());
+        }
     }
 }
 
