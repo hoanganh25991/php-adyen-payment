@@ -34,15 +34,23 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     $params = [
         'additionalData' => [
-            
+
             'card.encrypted.json' => $client_payload
-            
+
         ],
+
+        'card' => [
+            'number'      => '5555 4444 3333 1111',
+            'expiryMonth' => '8',
+            'expiryYear'  => '2018',
+            'cvc'         => '737',
+            'holderName'  => 'Anh',
+        ],  
 
         'amount' => [
             
             'value' => 20000,
-            'currency' => 'USD',
+            'currency' => 'EUR',
             
         ],
 
@@ -50,13 +58,28 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         'merchantAccount' => 'TheBeerFactoryXpress',
 
+//        'shopperEmail' => 's.hopper@test.com',
+
+//        'shopperIP' => '61.294.12.12',
+
         'recurring' => [
             
-            'contract' => \Adyen\Contract::ONECLICK_RECURRING
-            
+            'contract' => \Adyen\Contract::RECURRING,
+
+            'recurringDetailName' => '1'
+//            'contract' => 'RECURRING,ONECLICK',
+
         ],
 
-        'shopperReference' => 'Anh',
+        'shopperReference' => '1',
+
+        //        'shopperReference' => 'Simon Hopper',
+//
+        'shopperInteraction' => 'Ecommerce',
+//
+        'selectedRecurringDetailReference' => 'LATEST',
+//
+//        'selectedBrand' => '',
 
     ];
 
