@@ -33,21 +33,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $params = [
         'additionalData' => [
-            
+
             'card.encrypted.json' => $client_payload
-            
+
         ],
 
         'amount' => [
-            'value' => 20000,
-            'currency' => 'USD'
+            'value' => rand(100, 500) * 100,
+            'currency' => 'EUR'
         ],
 
         'reference' => 'authorized_payment',
 
         'merchantAccount' => 'TheBeerFactoryXpress',
-
-        'shopperReference' => '21321346546',
     ];
 
     var_dump($params);
@@ -61,6 +59,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         var_dump($result);
 
         // Write log
+        storePayment($params);
         hoiLog($result);
 
     }catch(\Exception $e){
