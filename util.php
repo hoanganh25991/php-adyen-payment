@@ -1,6 +1,12 @@
 <?php
 require_once("vendor/autoload.php");
 
+/**
+ * Get our client
+ * Reuse this library should submit your own credentials
+ * @return \Adyen\Client
+ * @throws \Adyen\AdyenException
+ */
 function getClient(){
     $client = new \Adyen\Client();
     $client->setApplicationName("Adyen PHP Api Library Example");
@@ -11,8 +17,55 @@ function getClient(){
     return $client;
 }
 
-function hoiLog($result){
-    $log_psp_ref = fopen('psp.log', 'a');
-    fwrite($log_psp_ref, json_encode($result) . PHP_EOL);
-    fclose($log_psp_ref);
+/**
+ * Suppot write & read log file
+ */
+const PSP_LOG_FILE =  'psp.log';
+
+function hoiLog($result, $filename = PSP_LOG_FILE){
+    $log_file = fopen($filename, 'a');
+    fwrite($log_file, json_encode($result) . PHP_EOL);
+    fclose($log_file);
+}
+
+function readLog($filename = PSP_LOG_FILE){
+    $log_file = fopen($filename, 'r');
+
+    $data = [];
+    while($line = fgets($log_file)){
+        try{
+            $data[] = json_decode($line);
+        }catch(\Exception $e){
+            errorLog($e->getMessage());
+        }
+    }
+
+    return $data;
+}
+
+
+/**
+ * Convenience call for write log
+ */
+const PAYMENT_LOG_FILE = 'payment.log';
+function storePayment($result){
+    $filename = PAYMENT_LOG_FILE;
+
+    hoiLog($result, $filename);
+}
+
+const ERROR_LOG_FILE = 'error.log';
+function errorLog($result){
+    $filename = ERROR_LOG_FILE;
+
+    hoiLog($result, $filename);
+}
+
+/**
+ * Convenience call for read lod
+ */
+function fetchRecentPayment(){
+    $filename = PAYMENT_LOG_FILE;
+
+    return readLog($filename);
 }
