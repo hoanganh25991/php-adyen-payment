@@ -19,15 +19,14 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         echo "<p>You entered {$_SERVER['PHP_AUTH_PW']} as your password.</p>";
         
     }
-   
-    // Reuse form to ask customer
-    // Input credit card info
-    include_once('form.php');
 
+    // Reuse form to ask customer input
+    // credit card info
+    include_once('form.php');
 }
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    
+
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
     var_dump($_POST);
 
     $client_payload = $_POST['adyen-encrypted-data'];
@@ -40,39 +39,32 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         ],
 
         'amount' => [
-            
             'value' => 20000,
-            'currency' => 'USD',
-            
+            'currency' => 'USD'
         ],
 
-        'reference' => 'recurring_payment',
+        'reference' => 'authorized_payment',
 
         'merchantAccount' => 'TheBeerFactoryXpress',
 
-        'recurring' => [
-            
-            'contract' => \Adyen\Contract::ONECLICK_RECURRING
-            
-        ],
-
-        'shopperReference' => 'Anh',
-
+        'shopperReference' => '21321346546',
     ];
 
-    $service = new \Adyen\Service\Recurring(getClient());
+
+    $service = new \Adyen\Service\Payment(getClient());
+
 
     try{
-        $result = $service->listRecurringDetails($params);
+        
+        $result = $service->authorise($params);
         var_dump($result);
 
         // Write log
         hoiLog($result);
-       
+
     }catch(\Exception $e){
-        
+
         var_dump($e->getMessage());
-        
     }
 }
 
