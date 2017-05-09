@@ -23,14 +23,16 @@ if(isset( $_GET['psp_ref'] )){
         
         'modificationAmount' => [
             
-            'value' => 20000,
-            'currency' => 'USD',
+            'value' => 42800,
+            'currency' => 'EUR',
             
         ],
+
+//        "card" => ["expiryMonth" => "8","expiryYear" => "2018","holderName" => "Anh","number" => "1111"],
+
+        'originalReference' => '8814943056556534',
         
-        'originalReference' => $psp_ref,
-        
-        'reference' => 'hoiposayden',
+        'reference' => 'asdfasdf',
     ];
     
     var_dump($params);

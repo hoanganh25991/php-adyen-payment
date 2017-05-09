@@ -33,46 +33,47 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $client_payload = $_POST['adyen-encrypted-data'];
 
     $params = [
-        'additionalData' => [
-
-            'card.encrypted.json' => $client_payload
-
-        ],
+//        'additionalData' => [
+//
+//            'card.encrypted.json' => $client_payload
+//
+//        ],
 
         'amount' => [
-            'value' => 20000,
+            'value' => rand(100, 500) * 100,
             'currency' => 'EUR'
         ],
 
-        'reference' => 'recurring_payment',
+//        'reference' => 'recurring_payment',
+        'reference' => 'using_recurring',
 
         'merchantAccount' => 'TheBeerFactoryXpress',
 
        // Required fields for ONECLICK
 
-        'card' => [
-            'cvc' => '737',
-        ],
+//        'card' => [
+//            'cvc' => '737',
+//        ],
 
         'recurring' => [
-            'contract' => 'ONECLICK',
+            'contract' => 'RECURRING',
         ],
 
-        'shopperReference' => '34nrvn29',
+        'shopperReference' => 'pc01wcdi',
 
-        'shopperInteraction' => 'Ecommerce',
+        'shopperInteraction' => 'ContAuth',
 
         'selectedRecurringDetailReference' => 'LATEST',
     ];
 
     var_dump($params);
 
-//    $service = new \Adyen\Service\Payment(getClient());
-    $service = new \Adyen\Service\Recurring(getClient());
+    $service = new \Adyen\Service\Payment(getClient());
+//    $service = new \Adyen\Service\Recurring(getClient());
 
     try{
-//        $result = $service->authorise($params);
-        $result = $service->listRecurringDetails($params);
+        $result = $service->authorise($params);
+//        $result = $service->listRecurringDetails($params);
         var_dump($result);
 
         // Write log
