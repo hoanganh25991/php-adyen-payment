@@ -13,17 +13,14 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
     $params = [
         // Important info
-        'countryCode'       => 'DE',
-        'currencyCode'      => 'EUR',
+        'countryCode'       => 'VN',
+        'currencyCode'      => 'VND',
         'merchantAccount'   => 'TheBeerFactoryXpress',
         'merchantReference' => 'get_payment_methods',
         'paymentAmount'     => 20000,
         'sessionValidity'   => $sessionValidity,
         'skinCode'          => 'BXsl0kmS',
-
-        // Optional
-        'countryCode'       => 'NL',
-        'shopperLocale'     => 'n1_NL'
+        'shopperLocale'     => 'vi_VN'
     ];
 
     // Self compute signature
