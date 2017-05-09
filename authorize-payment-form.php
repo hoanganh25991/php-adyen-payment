@@ -18,6 +18,10 @@ $generationtime = date(DATE_W3C, mktime(date("H"), date("i"), date("s"), date("m
     <input type="hidden" value="<?php echo $generationtime; ?>" data-encrypted-name="generationtime"/>
     <input type="submit" value="Pay"/>
 </form>
+<ul>
+    <li>Default value for card-number, holder-name,... fulfilled. Feel free to submit your own info.</li>
+    <li>To capture authorzied payment. <a href="capture.php">Go to Capture</a></li>
+</ul>
 <script>
     // The form element to encrypt.
     var form = document.getElementById('adyen-encrypted-form');

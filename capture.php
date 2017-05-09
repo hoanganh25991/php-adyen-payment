@@ -7,14 +7,21 @@ include_once('navigator.php');
 if(isGet()){
     $recent_payments = fetchRecentPayment();
 
-    echo "<h1>List 5 recent payments:</h1>";
+    echo "<h1>List recent payments</h1>";
+    echo "<ul>";
+    echo "<li>Capture in Adyen don't return as exception when calling it twice</li>";
+    echo "<li>Please self check success at your own <a href='https://ca-test.adyen.com'>ca-test</a> account at payments panel</li>";
+    echo "<li>It takes few minutes to update info in payments panel</li>";
+    echo "</ul><hr/>";
 
     echo "<ul>";
 
     foreach($recent_payments as $index => $payment){ ?>
         <li>
             <div>
-                <?php var_dump('Payment PSP Reference', $payment['result']['pspReference'], $payment); ?>
+                <?php hoiVarDump('Payment Reference', $payment['params']['reference']); ?>
+                <?php hoiVarDump('Payment PSP Reference', $payment['result']['pspReference']); ?>
+                <?php hoiVarDump('Payment Params & Result', $payment); ?>
                 <form method="POST">
                     <input type="hidden" name="payment_index" value="<?php echo $index; ?>"/>
                     <input type="hidden" name="action" value="capture" />
@@ -61,12 +68,13 @@ if(isPost()){
             'reference' => 'capture_payment',
         ];
 
+        hoiVarDump('Capture Params', $params);
 
         $service = new \Adyen\Service\Modification(getClient());
 
         try{
             $result = $service->capture($params);
-            var_dump($result);
+            hoiVarDump('Capture Result', $result);
 
             // Write log
             hoiLog($result);

@@ -24,24 +24,12 @@ if(isGet()){
    
     // Reuse form to ask customer
     // Input credit card info
-    echo "<h1>Click to pay to create recurring payment first time</h1>";
-    include_once('form.php');
+    echo "<h1>Click to [pay] to create recurring payment first time</h1><hr/>";
+    include_once('authorize-payment-form.php');
 
-    echo "<h1>Reuse recurring payment</h1>";
-    echo "<p>If you success create recurring payment first time, click reuse</p>";
-    echo "<p>If want to submit shopperReference, fullfill the input</p>";
-    ?>
-
-    <form method="POST">
-        <input type="hidden" name="action" value="reuse_recurring_payment"/>
-        <input type="text" name="shopperReference" placeholder="shopperReference">
-        <input type="text" name="amount_value" value="<?php echo rand(100, 500) * 100;?>" />
-        <input type="text" name="amount_currency" value="EUR" />
-        <button>Reuse</button>
-    </form>
-
-
-<?php }
+    echo "<h1>Reuse recurring payment</h1><hr/>";
+    include_once('recurring-payment-form.php');
+}
 
 
 if(isPost()){
@@ -68,7 +56,7 @@ if(isPost()){
                 'currency' => 'EUR'
             ],
 
-            'reference' => 'recurring_payment_firsttime',
+            'reference' => 'create_recurring_payment',
 
             'merchantAccount' => 'TheBeerFactoryXpress',
 
@@ -82,18 +70,19 @@ if(isPost()){
             'shopperInteraction' => 'ContAuth',
         ];
 
-        var_dump('Params for recurring payment', $params);
-        var_dump('Difference keys compare to normal authorzied payment', ['recurring', 'shopperReference', 'shopperInteraction']);
-        var_dump('This first time will create the shopperReference for recurring payment later use', ['shopperReference' => $shopperReference]);
+        hoiVarDump('Create Recurring Payment Params', $params);
+        hoiVarDump('Difference keys compare to normal authorzied payment', ['recurring', 'shopperReference', 'shopperInteraction']);
+        hoiVarDump('This first time will create the shopperReference for recurring payment later use', ['shopperReference' => $shopperReference]);
 
         $service = new \Adyen\Service\Payment(getClient());
 
         try{
             $result = $service->authorise($params);
-            var_dump($result);
+            hoiVarDump('Create Result', $result);
 
             // Write log
             storePayment(compact('params', 'result'));
+            
             hoiLog($result);
 
         }catch(\Exception $e){

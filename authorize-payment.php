@@ -21,6 +21,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
     // Reuse form to ask customer input
     // credit card info
+    echo "<h1>Create An Authorize Payment</h1><hr/>";
     include_once('authorize-payment-form.php');
 }
 
@@ -67,6 +68,5 @@ if(isPost()) {
         var_dump($e->getMessage());
     }
 }
-
 
 

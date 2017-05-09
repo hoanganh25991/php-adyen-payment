@@ -28,6 +28,7 @@ function hoiLog($result, $filename = PSP_LOG_FILE){
     fclose($log_file);
 }
 
+const MAX_READ = 3;
 function readLog($filename = PSP_LOG_FILE){
     $log_file = fopen($filename, 'r');
 
@@ -40,7 +41,7 @@ function readLog($filename = PSP_LOG_FILE){
         }
     }
 
-    return array_slice(array_reverse($data), 0, 4);
+    return array_slice(array_reverse($data), 0, MAX_READ);
 }
 
 
