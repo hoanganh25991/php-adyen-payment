@@ -2,3 +2,5 @@
 /node_modules
 /vendor
 /psp.log
+/payment.log
+/*.log
