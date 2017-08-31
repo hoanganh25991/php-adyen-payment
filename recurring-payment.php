@@ -71,6 +71,8 @@ if(isPost()){
         ];
 
         hoiVarDump('Create Recurring Payment Params', $params);
+        // Please remember that shopperInteraction ISSS IMPORTANT FOR recurrint contract as ONLY RECURRING
+        // When using with ONECLICK, no shopperInteraction
         hoiVarDump('Difference keys compare to normal authorzied payment', ['recurring', 'shopperReference', 'shopperInteraction']);
         hoiVarDump('This first time will create the shopperReference for recurring payment later use', ['shopperReference' => $shopperReference]);
 
